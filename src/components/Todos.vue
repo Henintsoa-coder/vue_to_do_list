@@ -16,7 +16,7 @@
                         <label @dblclick="editTodo(todo)">{{todo.name}}</label>
                         <button class="destroy" @click="deleteToDo(todo)"></button>
                     </div>
-                    <input type="text" class="edit" v-model="todo.name">
+                    <input type="text" class="edit" v-model="todo.name" @keyup.enter="doneEdit">
                 </li>
             </ul>
         </div>
@@ -63,6 +63,9 @@ export default {
         },
         editTodo(todo) {
             this.editing = todo;
+        },
+        doneEdit() {
+            this.editing = null;
         }
     },
     computed: {
