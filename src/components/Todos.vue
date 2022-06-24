@@ -37,13 +37,21 @@
 import Vue from 'vue'
 
 export default {
+    props: {
+        value: {type: Array, default() { return [] }}
+    },
     data(){
         return {
-            todos: [],
+            todos: this.value,
             newTodo: '',
             filter: 'all',
             editing: null,
             oldTodo: ''
+        }
+    },
+    watch: {
+        value(value){
+            this.todos = value;
         }
     },
     methods: {
@@ -57,9 +65,11 @@ export default {
         },
         deleteToDo(toDo) {
             this.todos = this.todos.filter(i => i !== toDo);
+            this.$emit('input', this.todos)
         },
         deleteCompleted() {
-            this.todos = this.todos.filter(todo => !todo.completed )
+            this.todos = this.todos.filter(todo => !todo.completed );
+            this.$emit('input', this.todos)
         },
         editTodo(todo) {
             this.editing = todo;

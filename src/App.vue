@@ -1,16 +1,31 @@
 <template>
   <div id="app">
-    <!-- HelloWorld/ -->
-    <todos></todos>
+    <todos v-model="todos"></todos>
   </div>
 </template>
 
 <script>
+/* eslint-disable */ 
 import Todos from './components/Todos'
-// import HelloWorld from './components/HelloWorld'
 
 export default {
   name: 'App',
-  components: {Todos}
+  components: {Todos},
+  data (){
+    return {
+      todos: [{
+        name: "Demo",
+        completed: true
+      }]
+    }
+  },
+  methods: {
+    addToDo (){
+      this.todos.push({
+        name:"Jean",
+        completed: false
+      })
+    }
+  }
 }
 </script>
