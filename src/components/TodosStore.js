@@ -32,6 +32,9 @@ const mutations = {
         state.todos = state.todos.filter((i) => {
             return i.name !== todo.name
         });
+    },
+    DELETE_COMPLETED: (state) => {
+        state.todos = state.todos.filter(todo => !todo.completed);
     }
 }
 
@@ -41,6 +44,9 @@ const actions = {
     },
     deleteTodo: (store, todo) => {
         store.commit('DELETE_TODO', todo)
+    },
+    deleteCompleted: (store) => {
+        store.commit('DELETE_COMPLETED')
     }
 }
 
