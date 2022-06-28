@@ -52,15 +52,12 @@ export default {
     },
     methods: {
         ...Vuex.mapActions({
-            addTodoStore:'addTodo'
+            addTodoStore:'addTodo',
+            deleteToDo: 'deleteTodo'
         }),
         addTodo(){
             this.addTodoStore(this.newTodo);
             this.newTodo = ''
-        },
-        deleteToDo(toDo) {
-            this.todos = this.todos.filter(i => i !== toDo);
-            //this.$emit('input', this.todos)
         },
         deleteCompleted() {
             this.todos = this.todos.filter(todo => !todo.completed );

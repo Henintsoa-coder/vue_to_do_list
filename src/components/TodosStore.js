@@ -27,12 +27,20 @@ const mutations = {
             name: name, 
             completed: false
         })
+    },
+    DELETE_TODO: (state, todo) => {
+        state.todos = state.todos.filter((i) => {
+            return i.name !== todo.name
+        });
     }
 }
 
 const actions = {
     addTodo: (store, name) => {
         store.commit('ADD_TODO', name);
+    },
+    deleteTodo: (store, todo) => {
+        store.commit('DELETE_TODO', todo)
     }
 }
 
