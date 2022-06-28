@@ -1,6 +1,8 @@
 <template>
   <div id="app">
-    <todos v-model="todos"></todos>
+    <todos></todos>
+    <todos></todos>
+    <todos></todos>
   </div>
 </template>
 
@@ -11,21 +13,6 @@ import Todos from './components/Todos'
 export default {
   name: 'App',
   components: {Todos},
-  data (){
-    return {
-      todos: [{
-        name: "Demo",
-        completed: true
-      }]
-    }
-  },
-  methods: {
-    addToDo (){
-      this.todos.push({
-        name:"Jean",
-        completed: false
-      })
-    }
-  }
+  methods: {}
 }
 </script>

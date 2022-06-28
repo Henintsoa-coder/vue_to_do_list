@@ -2,7 +2,7 @@
     <section class="todoapp">
         <header class="header">
             <h1>Todos</h1>
-            <input type="text" name="tache" id="tache" class="new-todo" placeholder="Ajouter une tâche" value="" v-model="newTodo" @keyup.enter="addToDo">
+            <input type="text" name="tache" id="tache" class="new-todo" placeholder="Ajouter une tâche" value="" v-model="newTodo" @keyup.enter="addTodo">
         </header>
 
         <div class="main">
@@ -21,13 +21,13 @@
             </ul>
         </div>
         <footer class="footer" v-show="hasTodos">
-            <span class="todo-count"><strong>{{ remaining }}</strong> tâches à faire </span>
+            <span class="todo-count"><strong>{{ remainingTodosCount }}</strong> tâches à faire </span>
             <ul class="filters">
                 <li><a href="#" :class="{selected: filter==='all'}" @click.prevent="filter = 'all'">Toutes les tâches</a></li>
                 <li><a href="#" :class="{selected: filter==='todo'}" @click.prevent="filter = 'todo'">A faire</a></li>
                 <li><a href="#" :class="{selected: filter==='done'}" @click.prevent="filter = 'done'">Faites</a></li>
             </ul>
-            <button class="clear-completed" v-show="completed" @click="deleteCompleted">Supprimer les tâches finies</button>
+            <button class="clear-completed" v-show="completedTodosCount" @click="deleteCompleted">Supprimer les tâches finies</button>
         </footer>
     </section>
 </template>
@@ -35,41 +35,36 @@
 <script>
 /* eslint-disable */ 
 import Vue from 'vue'
+import Store from './TodosStore'
+import Vuex, { mapGetters } from 'vuex'
+
+global.v = Vuex
 
 export default {
-    props: {
-        value: {type: Array, default() { return [] }}
-    },
     data(){
         return {
-            todos: this.value,
+            store: Store,
             newTodo: '',
             filter: 'all',
             editing: null,
             oldTodo: ''
         }
     },
-    watch: {
-        value(value){
-            this.todos = value;
-        }
-    },
     methods: {
-        addToDo() {
-            this.todos.push({
-                name: this.newTodo,
-                completed: false
-            });
-
-            this.newTodo = '';
+        ...Vuex.mapActions({
+            addTodoStore:'addTodo'
+        }),
+        addTodo(){
+            this.addTodoStore(this.newTodo);
+            this.newTodo = ''
         },
         deleteToDo(toDo) {
             this.todos = this.todos.filter(i => i !== toDo);
-            this.$emit('input', this.todos)
+            //this.$emit('input', this.todos)
         },
         deleteCompleted() {
             this.todos = this.todos.filter(todo => !todo.completed );
-            this.$emit('input', this.todos)
+            //this.$emit('input', this.todos)
         },
         editTodo(todo) {
             this.editing = todo;
@@ -84,6 +79,13 @@ export default {
         }
     },
     computed: {
+        ...Vuex.mapGetters([
+            'todos',
+            'remainingTodosCount',
+            'completedTodosCount',
+            'remaningTodos',
+            'completedTodos',
+        ]),
         allDone: {
             get(){
                 return this.remaining === 0
@@ -94,13 +96,11 @@ export default {
                 })
             }
         },
-        remaining(){return this.todos.filter(todo => !todo.completed).length;},
-        completed(){return this.todos.filter(todo => todo.completed).length;},
         filteredTodos(){
             if (this.filter == "todo") {
-                return this.todos.filter(todo => !todo.completed);
+                return this.remaningTodos;
             }else if(this.filter == "done") {
-                return this.todos.filter(todo => todo.completed);
+                return this.completedTodos;
             }
             return this.todos;
         },
