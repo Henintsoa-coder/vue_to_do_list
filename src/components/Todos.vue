@@ -16,7 +16,7 @@
                         <label @dblclick="editTodo(todo)">{{todo.name}}</label>
                         <button class="destroy" @click="deleteToDo(todo)"></button>
                     </div>
-                    <input type="text" class="edit" v-model="todo.name" @keyup.enter="doneEdit" @blur="doneEdit" @keyup.esc="cancelEdit" v-focus="todo === editing">
+                    <input type="text" class="edit" :value="todo.name" @keyup.enter="updateValue" @blur="updateValue" @keyup.esc="cancelEdit" v-focus="todo === editing">
                 </li>
             </ul>
         </div>
@@ -47,14 +47,16 @@ export default {
             newTodo: '',
             filter: 'all',
             editing: null,
-            oldTodo: ''
+            oldTodo: '',
+            updatedTodo: ''
         }
     },
     methods: {
         ...Vuex.mapActions({
                 addTodoStore:'addTodo',
                 deleteToDo: 'deleteTodo',
-                deleteCompleted: 'deleteCompleted'
+                deleteCompleted: 'deleteCompleted',
+                updateTodo: 'updateTodo'
         }),
         addTodo(){
             this.addTodoStore(this.newTodo);
@@ -63,6 +65,15 @@ export default {
         editTodo(todo) {
             this.editing = todo;
             this.oldTodo = todo.name;
+        },
+        updateValue(e){
+            this.updatedTodo = e.target.value;
+                      
+            const dataObject = {oldTodo: this.oldTodo, updatedTodo: this.updatedTodo}
+            
+            this.store.commit('UPDATE_TODO', dataObject);
+
+            this.doneEdit();
         },
         doneEdit() {
             this.editing = null;

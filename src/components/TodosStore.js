@@ -35,6 +35,13 @@ const mutations = {
     },
     DELETE_COMPLETED: (state) => {
         state.todos = state.todos.filter(todo => !todo.completed);
+    },
+    UPDATE_TODO: (state, dataOject) => {
+        const presentTodoIndex = state.todos.findIndex(object => object.name == dataOject.oldTodo);
+        
+        if(presentTodoIndex > -1) {
+            state.todos[presentTodoIndex].name = dataOject.updatedTodo;
+        }
     }
 }
 
@@ -47,6 +54,9 @@ const actions = {
     },
     deleteCompleted: (store) => {
         store.commit('DELETE_COMPLETED')
+    },
+    updateTodo: (store, oldTodo, newTodo) => {
+        store.commit('UPDATE_TODO', oldTodo, newTodo)
     }
 }
 
