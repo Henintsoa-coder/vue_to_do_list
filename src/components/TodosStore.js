@@ -42,6 +42,13 @@ const mutations = {
         if(presentTodoIndex > -1) {
             state.todos[presentTodoIndex].name = dataOject.updatedTodo;
         }
+    },
+    UPDATE_TODO_STATUS: (state, todo) => {
+        const presentTodoIndex = state.todos.findIndex(object => object.name == todo);
+        
+        if(presentTodoIndex > -1) {
+            state.todos[presentTodoIndex].completed = !state.todos[presentTodoIndex].completed;
+        }
     }
 }
 
@@ -54,9 +61,6 @@ const actions = {
     },
     deleteCompleted: (store) => {
         store.commit('DELETE_COMPLETED')
-    },
-    updateTodo: (store, oldTodo, newTodo) => {
-        store.commit('UPDATE_TODO', oldTodo, newTodo)
     }
 }
 

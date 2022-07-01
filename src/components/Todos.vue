@@ -75,6 +75,10 @@ export default {
 
             this.doneEdit();
         },
+        updateStatus(todo){
+            this.store.commit('UPDATE_TODO_STATUS', todo);
+            //this.doneEdit();
+        },
         doneEdit() {
             this.editing = null;
         },
@@ -88,7 +92,7 @@ export default {
             'todos',
             'remainingTodosCount',
             'completedTodosCount',
-            'remaningTodos',
+            'remainingTodos',
             'completedTodos',
         ]),
         allDone: {
@@ -103,7 +107,7 @@ export default {
         },
         filteredTodos(){
             if (this.filter == "todo") {
-                return this.remaningTodos;
+                return this.remainingTodos;
             }else if(this.filter == "done") {
                 return this.completedTodos;
             }
