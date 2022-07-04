@@ -12,7 +12,7 @@
             <ul class="todo-list">
                 <li class="todo" v-for="(todo, index) in filteredTodos" :key="index" :class="{completed: todo.completed == true, editing: todo === editing }">
                     <div class="view">
-                        <input type="checkbox" name="done" id="done" v-model="todo.completed" class="toggle completed">
+                        <input type="checkbox" name="done" id="done" v-model="todo.completed" @click="updateStatus(todo.name)" class="toggle completed">
                         <label @dblclick="editTodo(todo)">{{todo.name}}</label>
                         <button class="destroy" @click="deleteToDo(todo)"></button>
                     </div>
@@ -97,7 +97,7 @@ export default {
         ]),
         allDone: {
             get(){
-                return this.remaining === 0
+                return this.remainingTodos === 0
             },
             set(value){
                 this.todos.forEach(todo => {
